@@ -20,6 +20,6 @@ class Crawler:
     def crawl(self):
         link_tree = LinkTree()
         link_tree.create(self.argument_manager.page)
-        # self.save(link_tree.data)
-        link_tree.print_tree()
+        self.save(link_tree.data)
+
 
