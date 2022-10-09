@@ -4,10 +4,10 @@ import sys
 
 
 def main(argv):
-    argument_manager = ArgumentManager()
-    argument_manager.save_arguments(argv)
+    argument_manager = ArgumentManager(argv)
     crawler = Crawler(argument_manager)
     crawler.crawl()
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

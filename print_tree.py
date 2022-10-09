@@ -1,5 +1,5 @@
 from argument_manager import ArgumentManager
-from link_tree import LinkTree
+from data_collector import LinkTree
 import sys
 
 

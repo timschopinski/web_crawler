@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import PageElement
+from page_data import PageData
 
 
-class LinkTree:
+class DataCollector:
 
     def __init__(self):
         self.data = []
@@ -35,14 +36,14 @@ class LinkTree:
     def is_relative_url(url: str):
         return url[:2] == '//'
 
-    def print_sub_pages(self, subpage_name: str, num_of_subpages: int, depth: int, index: int):
-        if depth >= 2:
+    def print_sub_pages(self, subpage_name: str, num_of_subpages: int, depth: int, index: int, max_depth: int):
+        if depth >= max_depth:
             print(f'\t \t {subpage_name}_{index} (0)')
         else:
             print(f'\t {subpage_name} ({num_of_subpages})')
 
         for num in range(num_of_subpages):
-            self.print_sub_pages(f'subpage{index}', 0, depth+1, num+1)
+            self.print_sub_pages(f'subpage{index}', 0, depth+1, num+1, max_depth)
 
     def print_tree(self):
         for id, page in enumerate(self.data):
@@ -50,7 +51,7 @@ class LinkTree:
             if id == 0:
                 print(f"Main page ({num_of_subpages})")
             else:
-                self.print_sub_pages(f'subpage{id}', num_of_subpages, 1, id)
+                self.print_sub_pages(f'subpage{id}', num_of_subpages, 1, id, 2)
 
     def get_child_url(self, child: PageElement, base_url: str):
         child_url = child['href']
@@ -82,7 +83,7 @@ class LinkTree:
 
         try:
             title = soup.find('title').text
-        except:
+        except AttributeError:
             title = ''
 
         self._urls.append(parent_url)
@@ -119,7 +120,7 @@ class LinkTree:
         for page in self.data:
             page.pop('children')
 
-    def create(self, base_url: str, max_depth: int = 2):
+    def get_page_data(self, base_url: str, max_depth: int = 2) -> PageData:
         
         self._collect_data(base_url, base_url, 0, max_depth)
         self._update_data()
