@@ -5,7 +5,7 @@ from typing import List
 from logger import Logger
 from pathlib import Path
 from utils.file_format import FileFormat
-
+from urls.base_url import BaseUrl
 
 class ArgumentManager:
 
@@ -47,7 +47,7 @@ class ArgumentManager:
                 Logger.log_help_message()
                 sys.exit()
             elif opt in ('--p', '--page'):
-                self.page = arg
+                self.page = BaseUrl(arg)
             elif opt in ('--f', '--format'):
                 self.set_format(arg)
             elif opt in ('--o', '--output'):
