@@ -1,6 +1,7 @@
 from file_writers.file_writer import FileWriter
 import pandas as pd
 
+
 class CsvFileWriter(FileWriter):
 
     @classmethod

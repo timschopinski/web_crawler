@@ -1,14 +1,16 @@
+from typing import List
+
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import PageElement
-from page_data import PageData
+from page import Page
 
 
 class DataCollector:
 
     def __init__(self):
-        self.data = []
         self._urls = []
+        self.data: List[Page] = []
 
     @staticmethod
     def remove_forward_slash(url: str) -> str:
@@ -79,7 +81,7 @@ class DataCollector:
             print(e)
             return
 
-        children = soup.find_all('a', href=True)
+        subpages_urls = soup.find_all('a', href=True)
 
         try:
             title = soup.find('title').text
@@ -87,20 +89,25 @@ class DataCollector:
             title = ''
 
         self._urls.append(parent_url)
-        self.data.append({
-            'url': parent_url,
-            'title': title,
-            'internal links count': len([link for link in children if not 'http' in link['href']]),
-            'external links count': len([link for link in children if 'http' in link['href']]),
-            'reference count': 0,
-            'children': [self.get_child_url(child, base_url) for child in children]
-        })
+
+        new_page = Page(parent_url, title, [self.get_child_url(child, base_url) for child in subpages_urls])
+        self.data.append(new_page)
+
+        # self.data.append({
+        #     'url': parent_url,
+        #     'title': title,
+        #     'internal links count': len([link for link in subpages_urls if not 'http' in link['href']]),
+        #     'external links count': len([link for link in subpages_urls if 'http' in link['href']]),
+        #     'reference count': 0,
+        #     'subpages_urls': [self.get_child_url(child, base_url) for child in subpages_urls]
+        # })
 
         depth += 1
-        for child in children:
+        for child in subpages_urls:
             child_url = self.get_child_url(child, base_url)
             if not child_url:
                 continue
+
             if child_url in self._urls:
                 print(f'EXISTING -> {child_url}')
             else:
@@ -109,18 +116,15 @@ class DataCollector:
                 print(f'NORMAL -> {child_url}')
                 self._collect_data(base_url, child_url, depth, max_depth)
 
-    def _update_data(self):
+    def _count_references(self):
         for page in self.data:
-            page['children'] = list(dict.fromkeys(page['children']))
-            for child in page['children']:
+            for child_url in page.get_unique_subpages_urls():
                 for p in self.data:
-                    if p['url'] == child:
-                        p['reference count'] += 1
+                    if p.url == child_url:
+                        p.reference_count += 1
 
-        for page in self.data:
-            page.pop('children')
-
-    def get_page_data(self, base_url: str, max_depth: int = 2) -> PageData:
+    def get_page_data(self, base_url: str, max_depth: int = 2) -> List[Page]:
         
         self._collect_data(base_url, base_url, 0, max_depth)
-        self._update_data()
+        self._count_references()
+        return self.data
