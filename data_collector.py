@@ -12,23 +12,6 @@ class DataCollector:
         self._urls = []
         self.data: List[Page] = []
 
-    def print_sub_pages(self, subpage_name: str, num_of_subpages: int, depth: int, index: int, max_depth: int):
-        if depth >= max_depth:
-            print(f'\t \t {subpage_name}_{index} (0)')
-        else:
-            print(f'\t {subpage_name} ({num_of_subpages})')
-
-        for num in range(num_of_subpages):
-            self.print_sub_pages(f'subpage{index}', 0, depth+1, num+1, max_depth)
-
-    def print_tree(self):
-        for id, page in enumerate(self.data):
-            num_of_subpages = page['internal links count']
-            if id == 0:
-                print(f"Main page ({num_of_subpages})")
-            else:
-                self.print_sub_pages(f'subpage{id}', num_of_subpages, 1, id, 2)
-
     @staticmethod
     def _get_soup(url: Url) -> BeautifulSoup:
         soup = None

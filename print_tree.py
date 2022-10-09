@@ -1,14 +1,16 @@
 from argument_manager import ArgumentManager
-from data_collector import LinkTree
+from data_collector import DataCollector
+from link_tree import LinkTree
 import sys
 
 
 def main(argv):
-    argument_manager = ArgumentManager()
-    argument_manager.save_arguments(argv)
+    argument_manager = ArgumentManager(argv)
+    data_collector = DataCollector()
     link_tree = LinkTree()
-    link_tree.create(argument_manager.page)
-    link_tree.print_tree()
+    page_data = data_collector.get_page_data(argument_manager.page)
+    page_data = [page.to_representation() for page in page_data]
+    link_tree.print_tree(page_data)
 
 
 if __name__ == '__main__':
