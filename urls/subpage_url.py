@@ -7,6 +7,9 @@ class SubpageUrl(Url):
     def __init__(self, base: Url, a_tag: PageElement):
         self.url = self.get_subpage_url(a_tag, base)
 
+    def __eq__(self, other):
+        return self.url == other.url
+
     @staticmethod
     def _is_external_link(link) -> bool:
         return 'http' in link
@@ -18,26 +21,26 @@ class SubpageUrl(Url):
         return url
 
     @staticmethod
-    def _remove_query_params(url: str):
+    def _remove_query_params(url: str) -> str:
         return url.split('?')[0]
 
     @staticmethod
-    def _contains_query_params(url: str):
+    def _contains_query_params(url: str) -> bool:
         return '?' in url
 
     @staticmethod
-    def _remove_hash_sign(url: str):
+    def _remove_hash_sign(url: str) -> str:
         return url.split('#')[0]
 
     @staticmethod
-    def _contains_hash_sign(url: str):
+    def _contains_hash_sign(url: str) -> bool:
         return '#' in url
 
     @staticmethod
-    def _is_relative_path(path: str):
+    def _is_relative_path(path: str) -> bool:
         return path[:2] == '//'
 
-    def to_string(self):
+    def to_string(self) -> str:
         return str(self.url)
 
     def _get_validated_subpage_path(self, subpage_path: str) -> str:

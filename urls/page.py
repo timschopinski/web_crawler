@@ -1,5 +1,4 @@
 from typing import List
-
 from bs4.element import PageElement, ResultSet
 from urls.url import Url
 from urls.subpage_url import SubpageUrl
@@ -10,7 +9,7 @@ class Page:
     def __init__(self, url: Url, base_url: Url, title: str, subpage_tags: ResultSet[PageElement]):
         self.url = url.to_string()
         self.title = title
-        self.subpages_urls = [SubpageUrl(base_url, tag) for tag in subpage_tags]
+        self.subpages_urls: List[Url] = [SubpageUrl(base_url, tag) for tag in subpage_tags]
         self._number_of_internal_links = self._count_internal_links(subpage_tags)
         self._number_of_external_links = self._count_external_links(subpage_tags)
         self.reference_count = 0

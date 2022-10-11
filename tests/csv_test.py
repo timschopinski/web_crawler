@@ -1,8 +1,5 @@
-import json
 from copy import deepcopy
 import pandas as pd
-from argument_manager import ArgumentManager
-from crawler import Crawler
 
 
 def compare_csv(data_path: str = 'csv_files/crawl-results.csv', test_data_path: str = 'csv_files/crawler-test.com.csv'):

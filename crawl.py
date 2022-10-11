@@ -1,7 +1,7 @@
 import asyncio
 
-from argument_manager import ArgumentManager
-from crawler import Crawler
+from management.argument_manager import ArgumentManager
+from crawler.crawler import Crawler
 import sys
 
 

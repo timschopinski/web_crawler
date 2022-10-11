@@ -8,3 +8,6 @@ class BaseUrl(Url):
 
     def to_string(self):
         return str(self.url)
+
+    def __eq__(self, other):
+        return self.url == other.url

@@ -15,6 +15,6 @@ class FileManager:
         }
         return writers[file_format]
 
-    def save(self, file_format: FileFormat, output: str, data: List[dict]):
+    def save(self, file_format: FileFormat, output: str, data: List[dict]) -> None:
         writer = self._get_file_writer(file_format)
         writer.save(output, data)
