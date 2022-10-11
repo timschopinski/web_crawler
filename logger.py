@@ -10,3 +10,7 @@ class Logger:
     def log_wrong_format_message() -> None:
         print('Invalid Format.')
         Logger.log_help_message()
+
+    @staticmethod
+    def log_timout_error() -> None:
+        print('Timeout error.')
