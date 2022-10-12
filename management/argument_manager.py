@@ -15,6 +15,7 @@ class ArgumentManager:
         self.output = None
         self.allow_redirects = False
         self.max_depth = 2
+        self.timeout = 3
         self._save_arguments(argv)
 
     @staticmethod
@@ -44,9 +45,13 @@ class ArgumentManager:
         if value.isnumeric() and int(value) > 0:
             self.max_depth = int(value)
 
+    def _set_timeout(self, value: str):
+        if value.isnumeric() and int(value) > 0:
+            self.timeout = int(value)
+
     def _save_arguments(self, argv) -> None:
         try:
-            long_opts = ['help', 'allow_redirects', 'max_depth=', 'page=', 'format=', 'output=']
+            long_opts = ['help', 'allow_redirects', 'max_depth=', 'page=', 'format=', 'output=', "timeout="]
             opts, args = getopt.getopt(argv, 'hp:f:o:', long_opts)
         except getopt.GetoptError:
             sys.exit(2)
@@ -64,4 +69,5 @@ class ArgumentManager:
                 self.allow_redirects = True
             elif opt == '--max_depth':
                 self._set_max_depth(arg)
-
+            elif opt == '--timeout':
+                self._set_timeout(arg)

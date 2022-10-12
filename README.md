@@ -54,9 +54,15 @@ There are also two additional arguments:
 
 --max_depth, maximum depth of subpages, by default is set to 2
 
-Example:
+--timeout, you can speed up the scraping by specifying the timeout argument, default is 3s
 
-crawl.py --page 'url' --format 'csv/json' --output 'output' --max_depth 3 --allow_redirects
+Notice:
+If the script will reach the timeout there will be a 'Timeout error.' message displayed in the console.
+
+Example usage with all arguments:
+
+crawl.py --page 'url' --format 'csv/json' --output 'output' --max_depth 3 --allow_redirects --timeout 10
+
 
 
 ## License
