@@ -1,0 +1,13 @@
+The results I got from the crawl.py script
+are saved in tests/csv_files/crawl-results.csv
+test_csv_files.py script compares this result with the given crawler-test.com.csv
+There are two differences:
+- I am one getting additional link 'https://crawler-test.com/relativeurl:withcolon'
+- This link changes the path since this is an expiring page 'https://crawler-test.com/other/expiring_page_for_removed_test/1664806911.49134'
+
+To get the closest possible result I used --timeout 3 and only 3 links got the 'Timeout Error' and were not saved:
+    100 HTTP Status
+    101 HTTP Status
+    102 HTTP Status
+
+

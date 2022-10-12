@@ -20,14 +20,17 @@ class DataCollector:
         self.timeout = 10
 
     async def _get_soup(self, url: Url) -> BeautifulSoup:
-        print(url.to_string())
         try:
             async with aiohttp.ClientSession(trust_env=True) as session:
-                async with session.get(url.to_string(), allow_redirects=self.allow_redirects, ssl=False, timeout=ClientTimeout(total=self.timeout)) as resp:
+                async with session.get(
+                        url.to_string(),
+                        allow_redirects=self.allow_redirects,
+                        ssl=False,
+                        timeout=ClientTimeout(total=self.timeout)) as resp:
                     body = await resp.text()
                     soup = BeautifulSoup(body, 'html.parser')
                     return soup
-        except asyncio.exceptions.TimeoutError as e:
+        except asyncio.exceptions.TimeoutError:
             Logger.log_timout_error()
 
     @staticmethod
